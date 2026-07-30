@@ -1,0 +1,141 @@
+enum Role {
+  CITIZEN
+  DA
+  PATWARI
+  TEHSILDAR
+  ADMIN
+}
+
+enum ApplicationStatus {
+  SUBMITTED
+  IN_PROGRESS
+  CORRECTION_REQUIRED
+  APPROVED
+  REJECTED
+}
+
+enum WorkflowStage {
+  DA
+  PATWARI
+  DA_REVIEW
+  TEHSILDAR
+  COMPLETED
+}
+
+model User {
+  id          String   @id @default(uuid())
+  fullName    String
+  email       String   @unique
+  phone       String   @unique
+  password    String
+
+  role        Role
+
+  districtId  String?
+  tehsilId    String?
+  villageId   String?
+
+  isActive    Boolean  @default(true)
+
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  applications Application[]
+}
+
+model Service {
+  id          String   @id @default(uuid())
+
+  name        String
+  description String?
+
+  slaDays     Int
+
+  isActive    Boolean @default(true)
+
+  createdAt   DateTime @default(now())
+
+  applications Application[]
+}
+
+
+model Application {
+
+  id               String   @id @default(uuid())
+
+  applicationNo    String   @unique
+
+  citizenId        String
+
+  serviceId        String
+
+  status           ApplicationStatus
+
+  currentStage     WorkflowStage
+
+  assignedTo       String?
+
+  submittedAt      DateTime @default(now())
+
+  dueDate          DateTime?
+
+  completedAt      DateTime?
+
+  citizen          User @relation(fields: [citizenId], references: [id])
+
+  service          Service @relation(fields: [serviceId], references: [id])
+
+  documents        Document[]
+
+  workflowHistory  WorkflowHistory[]
+}
+
+model Document {
+
+  id            String @id @default(uuid())
+
+  applicationId String
+
+  documentType  String
+
+  fileUrl       String
+
+  verified      Boolean @default(false)
+
+  uploadedAt    DateTime @default(now())
+
+  application   Application @relation(fields: [applicationId], references: [id])
+
+}
+
+model WorkflowHistory {
+
+  id             String @id @default(uuid())
+
+  applicationId  String
+
+  fromOfficer    String?
+
+  toOfficer      String?
+
+  action         String
+
+  remarks        String?
+
+  startTime      DateTime
+
+  endTime        DateTime?
+
+  application Application @relation(fields: [applicationId], references: [id])
+
+}
+
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
