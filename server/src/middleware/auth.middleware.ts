@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { Role } from "@prisma/client";
 
-const JWT_SECRET = process.env.JWT_SECRET!;
+const JWT_SECRET = process.env.JWT_SECRET || "default_jwt_secret_himachal_smart_edistrict";
 
 interface JwtPayload {
   id: string;
@@ -32,10 +32,16 @@ export async function authenticate(
     }
 
     const token = authHeader.split(" ")[1];
+    if (!token) {
+      return res.status(401).json({
+        success: false,
+        message: "Token missing",
+      });
+    }
 
     const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
 
-    req.user = {
+    (req as any).user = {
       id: decoded.id,
       role: decoded.role,
     };
@@ -47,4 +53,27 @@ export async function authenticate(
       message: "Invalid or expired token",
     });
   }
+}
+
+export async function optionalAuthenticate(
+  req: Request,
+  res: Response,
+  next: NextFunction
+) {
+  try {
+    const authHeader = req.headers.authorization;
+    if (authHeader && authHeader.startsWith("Bearer ")) {
+      const token = authHeader.split(" ")[1];
+      if (token) {
+        const decoded = jwt.verify(token, JWT_SECRET) as JwtPayload;
+        (req as any).user = {
+          id: decoded.id,
+          role: decoded.role,
+        };
+      }
+    }
+  } catch {
+    // Ignore error for optional authentication
+  }
+  next();
 }
