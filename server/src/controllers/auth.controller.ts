@@ -27,7 +27,7 @@ export async function register(req: Request, res: Response) {
   } catch (error: any) {
     let message = error.message;
     if (error instanceof ZodError) {
-      message = error.errors.map(e => e.message).join(", ");
+      message = (error as any).errors.map((e: any) => e.message).join(", ");
     }
     return res.status(400).json({
       success: false,
@@ -53,7 +53,7 @@ export async function login(req: Request, res: Response) {
   } catch (error: any) {
     let message = error.message;
     if (error instanceof ZodError) {
-      message = error.errors.map(e => e.message).join(", ");
+      message = (error as any).errors.map((e: any) => e.message).join(", ");
     }
     return res.status(401).json({
       success: false,

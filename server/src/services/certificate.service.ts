@@ -71,17 +71,19 @@ export async function generateCertificate(applicationId: string) {
   const incomeAmount = Number(formData.annualIncome || "100000");
   const incomeWords = numberToWordsIndian(incomeAmount);
   const currentYear = new Date().getFullYear();
-  const validityText = `Validity: Current FY. ${currentYear}-${(currentYear + 1).toString().slice(2)}`;
+  let validityText = `Validity: Current FY. ${currentYear}-${(currentYear + 1).toString().slice(2)}`;
 
   const serviceName = application.certificateService.name;
   let titleEng = "INCOME CERTIFICATE";
   let formType = "Form D";
   let formPara = "(See Para 28.10)";
+  const isBonafide = serviceName.toLowerCase().includes("bonafide");
 
-  if (serviceName.toLowerCase().includes("bonafide")) {
+  if (isBonafide) {
     titleEng = "BONAFIDE HIMACHALI CERTIFICATE";
     formType = "Form A";
     formPara = "(See Para 12.4)";
+    validityText = "Validity: Permanent Certificate";
   } else if (serviceName.toLowerCase().includes("caste")) {
     titleEng = "CASTE CERTIFICATE";
     formType = "Form B";
@@ -199,7 +201,12 @@ export async function generateCertificate(applicationId: string) {
     // 6. Certificate Body (Clear Official English Paragraph)
     let bodyY = 156;
 
-    const englishText = `This is to certify that on the basis of verified revenue inquiries and records produced before this authority, the total annual family income of ${salutation} ${applicantName}, ${relationType} ${relativeName}, resident of Village / Muhal ${village}, Tehsil ${tehsil}, District ${district} (Himachal Pradesh) from all known sources is assessed as:`;
+    let englishText = `This is to certify that on the basis of verified revenue inquiries and records produced before this authority, the total annual family income of ${salutation} ${applicantName}, ${relationType} ${relativeName}, resident of Village / Muhal ${village}, Tehsil ${tehsil}, District ${district} (Himachal Pradesh) from all known sources is assessed as:`;
+
+    if (isBonafide) {
+      const relShort = relationType.toLowerCase().includes("son") ? "S/O" : relationType.toLowerCase().includes("daughter") ? "D/O" : "W/O";
+      englishText = `Certified that ${salutation.toUpperCase()} ${applicantName.toUpperCase()} ${relShort} ${relativeName.toUpperCase()} resident of VILLAGE ${village.toUpperCase()} Tehsil ${tehsil.toUpperCase()} District ${district.toUpperCase()} is a Bonafide Himachali.\n\ni) Having his/her permanent home in Himachal Pradesh.\n\nii) Residing in Himachal Pradesh for a period of 20 years or more.\n\niii) Having permanent Home in Himachal Pradesh but living outside H.P. on account of his/her occupation.`;
+    }
 
     doc.fontSize(9.5).fillColor("#111827").font("Helvetica").text(englishText, 35, bodyY, {
       align: "justify",
@@ -210,18 +217,19 @@ export async function generateCertificate(applicationId: string) {
     bodyY = doc.y + 8;
 
     // Income Highlight Box
-    doc.rect(35, bodyY, 525, 26).lineWidth(0.5).strokeColor("#93C5FD").fillColor("#EFF6FF").fillAndStroke();
-    doc.fontSize(10).fillColor("#1E3A8A").font("Helvetica-Bold").text(
-      `Rs. ${incomeAmount.toLocaleString("en-IN")} /- (${incomeWords})`,
-      35,
-      bodyY + 8,
-      { align: "center", width: 525 }
-    );
+    if (!isBonafide) {
+      doc.rect(35, bodyY, 525, 26).lineWidth(0.5).strokeColor("#93C5FD").fillColor("#EFF6FF").fillAndStroke();
+      doc.fontSize(10).fillColor("#1E3A8A").font("Helvetica-Bold").text(
+        `Rs. ${incomeAmount.toLocaleString("en-IN")} /- (${incomeWords})`,
+        35,
+        bodyY + 8,
+        { align: "center", width: 525 }
+      );
+      bodyY += 36;
+    }
 
-    bodyY += 36;
-
-    // 7. Family Members Section (only if applicant provided them)
-    if (familyMembers.length > 0) {
+    // 7. Family Members Section (only if applicant provided them and not bonafide)
+    if (!isBonafide && familyMembers.length > 0) {
       doc.fontSize(8.5).fillColor("#374151").font("Helvetica-Bold").text(
         "Details of Family Members (As per verified affidavit and revenue records):",
         35,

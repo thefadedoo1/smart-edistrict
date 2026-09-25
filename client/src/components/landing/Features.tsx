@@ -1,120 +1,71 @@
-import {
-  Clock3,
-  ShieldCheck,
-  Workflow,
-  BellRing,
-  FileCheck,
-  BarChart3,
-} from "lucide-react";
+import { Clock3, Workflow, ShieldCheck, BellRing, FileCheck, BarChart3 } from "lucide-react";
 
 const features = [
   {
-    title: "Real-Time Application Tracking",
-    description: "Citizens can track every stage of their application from submission to certificate generation.",
+    title: "Real-Time Tracking",
+    description: "Monitor your application status live. No more unnecessary visits to government offices.",
     icon: Clock3,
-    color: "from-blue-500 to-cyan-500",
-    bg: "bg-blue-50",
-    iconColor: "text-blue-600",
   },
   {
-    title: "Multi-Level Approval Workflow",
-    description: "Applications move through DA, Patwari, DA Review and Tehsildar with complete transparency.",
-    icon: Workflow,
-    color: "from-indigo-500 to-purple-500",
-    bg: "bg-indigo-50",
-    iconColor: "text-indigo-600",
-  },
-  {
-    title: "SLA Monitoring",
-    description: "Every application is monitored against defined service timelines to reduce delays.",
+    title: "SLA-Based Delivery",
+    description: "Every service is backed by a Service Level Agreement (SLA) to ensure timely resolution.",
     icon: ShieldCheck,
-    color: "from-emerald-500 to-teal-500",
-    bg: "bg-emerald-50",
-    iconColor: "text-emerald-600",
   },
   {
-    title: "Automatic Escalation",
-    description: "Delayed applications are automatically highlighted so officers can take timely action.",
+    title: "Transparent Workflow",
+    description: "Know exactly which department and officer is currently processing your request.",
+    icon: Workflow,
+  },
+  {
+    title: "Instant Notifications",
+    description: "Receive SMS and email updates when your application advances or requires attention.",
     icon: BellRing,
-    color: "from-amber-500 to-orange-500",
-    bg: "bg-amber-50",
-    iconColor: "text-amber-600",
   },
   {
-    title: "Digital Certificate Generation",
-    description: "Approved applications generate downloadable digital certificates instantly.",
+    title: "Digital Certificates",
+    description: "Download digitally signed, legally valid certificates directly from your citizen portal.",
     icon: FileCheck,
-    color: "from-rose-500 to-pink-500",
-    bg: "bg-rose-50",
-    iconColor: "text-rose-600",
   },
   {
-    title: "Officer Performance Analytics",
-    description: "Monitor workload, processing time and SLA compliance to improve governance.",
+    title: "Accountable Governance",
+    description: "Built-in escalation matrices ensure delays are highlighted to senior officials automatically.",
     icon: BarChart3,
-    color: "from-slate-500 to-slate-700",
-    bg: "bg-slate-100",
-    iconColor: "text-slate-700",
   },
 ];
 
 const Features = () => {
   return (
-    <section className="relative bg-slate-50 py-24 sm:py-32 overflow-hidden">
-      
-      {/* Decorative Elements */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-64 bg-gradient-to-b from-slate-200/50 to-transparent blur-3xl pointer-events-none" />
-
-      <div className="relative z-10 mx-auto max-w-7xl px-6">
+    <section id="about" className="bg-white py-16 lg:py-24 border-b border-slate-200">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
         
-        <div className="mx-auto max-w-2xl text-center">
-          <h2 className="text-sm font-bold tracking-widest text-blue-600 uppercase">
-            Platform Capabilities
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900">
+            Why Smart eDistrict?
           </h2>
-          <p className="mt-2 text-4xl font-black tracking-tight text-slate-900 sm:text-5xl">
-            Why Choose Himseva eDistrict?
-          </p>
-          <p className="mt-6 text-lg leading-8 text-slate-600">
-            A modern digital governance platform designed to provide transparent, accountable, and highly efficient public services to every citizen.
+          <p className="mt-4 text-lg text-slate-600">
+            A citizen-first digital platform designed to provide transparent, accountable, and highly efficient public services.
           </p>
         </div>
 
-        <div className="mx-auto mt-16 max-w-7xl sm:mt-20 lg:mt-24">
-          <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-10 lg:max-w-none lg:grid-cols-3 lg:gap-y-16">
-            
-            {features.map((feature) => {
-              const Icon = feature.icon;
-
-              return (
-                <div
-                  key={feature.title}
-                  className="group relative flex flex-col rounded-3xl bg-white p-8 ring-1 ring-slate-200/50 shadow-sm transition-all duration-300 hover:-translate-y-2 hover:shadow-xl hover:shadow-blue-900/5 hover:ring-blue-100"
-                >
-                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-b from-white to-slate-50/50 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" />
-                  
-                  <div className="relative z-10">
-                    <div className={`mb-6 inline-flex h-14 w-14 items-center justify-center rounded-2xl ${feature.bg} shadow-sm ring-1 ring-slate-900/5 transition-transform group-hover:scale-110 duration-300`}>
-                      <Icon size={28} className={feature.iconColor} strokeWidth={2} />
-                    </div>
-                    
-                    <dt className="text-xl font-bold leading-7 text-slate-900">
-                      {feature.title}
-                    </dt>
-                    
-                    <dd className="mt-4 flex flex-auto flex-col text-base leading-7 text-slate-600">
-                      <p className="flex-auto">
-                        {feature.description}
-                      </p>
-                    </dd>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {features.map((feature) => {
+            const Icon = feature.icon;
+            return (
+              <div key={feature.title} className="flex gap-4">
+                <div className="shrink-0 mt-1">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-blue-100 text-blue-700">
+                    <Icon size={24} />
                   </div>
-                  
-                  {/* Bottom Gradient Accent */}
-                  <div className={`absolute bottom-0 left-8 right-8 h-[2px] bg-gradient-to-r ${feature.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300 rounded-t-full`} />
                 </div>
-              );
-            })}
-
-          </dl>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900 mb-2">{feature.title}</h3>
+                  <p className="text-slate-600 leading-relaxed">
+                    {feature.description}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
         </div>
 
       </div>

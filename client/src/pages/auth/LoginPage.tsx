@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { Shield, User, Award, CheckCircle2, ArrowRight } from "lucide-react";
+import { Shield, User, Award, ArrowRight, Landmark } from "lucide-react";
 import { loginUser } from "../../services/auth.service";
 import { useAuth } from "../../hooks/useAuth";
 
@@ -47,34 +47,42 @@ export default function LoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-950 flex flex-col justify-center py-12 sm:px-6 lg:px-8 relative overflow-hidden">
-      {/* Background Gradient Orbs */}
-      <div className="absolute -top-40 -right-40 w-96 h-96 bg-emerald-600/20 rounded-full blur-3xl pointer-events-none"></div>
-      <div className="absolute -bottom-40 -left-40 w-96 h-96 bg-blue-600/20 rounded-full blur-3xl pointer-events-none"></div>
+    <div className="min-h-screen bg-slate-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-sans">
+      
+      {/* Top Navigation / Logo area */}
+      <div className="absolute top-0 left-0 w-full bg-white border-b border-slate-200 py-4 px-6 flex justify-between items-center">
+        <Link to="/" className="flex items-center gap-3">
+          <div className="bg-blue-800 p-2 rounded-lg text-white">
+            <Landmark size={20} />
+          </div>
+          <span className="text-xl font-bold text-slate-900 leading-tight">Smart eDistrict</span>
+        </Link>
+        <Link to="/" className="text-sm font-semibold text-blue-700 hover:text-blue-800 transition-colors">
+          Return to Home
+        </Link>
+      </div>
 
-      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center z-10">
-        <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-400 text-white shadow-xl shadow-emerald-900/30 mb-4">
-          <Shield className="w-8 h-8" />
-        </div>
-        <h2 className="text-3xl font-black tracking-tight text-white">
-          HimSeva e-District
+      <div className="sm:mx-auto sm:w-full sm:max-w-md text-center mt-12">
+        <h2 className="text-3xl font-bold tracking-tight text-slate-900">
+          Sign in to your account
         </h2>
-        <p className="mt-2 text-sm text-slate-400">
-          Government of Himachal Pradesh • Single Window Citizen Portal
+        <p className="mt-2 text-sm text-slate-600">
+          Secure access to official government services
         </p>
       </div>
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md z-10 px-4">
-        <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-800 py-8 px-6 shadow-2xl rounded-2xl sm:px-10">
+      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md px-4">
+        <div className="bg-white border border-slate-200 py-8 px-6 shadow-sm rounded-xl sm:px-10">
+          
           {/* Portal Selector Tabs */}
-          <div className="grid grid-cols-3 gap-1 p-1 bg-slate-950/80 rounded-xl border border-slate-800/80 mb-6">
+          <div className="grid grid-cols-3 gap-1 p-1 bg-slate-100 rounded-lg border border-slate-200 mb-6">
             <button
               type="button"
               onClick={() => setPortal("CITIZEN")}
-              className={`py-2 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+              className={`py-2 text-xs font-semibold rounded-md transition-all flex items-center justify-center gap-1.5 ${
                 portal === "CITIZEN"
-                  ? "bg-emerald-600 text-white shadow"
-                  : "text-slate-400 hover:text-slate-200"
+                  ? "bg-white text-blue-700 shadow-sm border-slate-200 border"
+                  : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
               }`}
             >
               <User className="w-3.5 h-3.5" /> Citizen
@@ -82,10 +90,10 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={() => setPortal("OFFICER")}
-              className={`py-2 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+              className={`py-2 text-xs font-semibold rounded-md transition-all flex items-center justify-center gap-1.5 ${
                 portal === "OFFICER"
-                  ? "bg-blue-600 text-white shadow"
-                  : "text-slate-400 hover:text-slate-200"
+                  ? "bg-white text-blue-700 shadow-sm border-slate-200 border"
+                  : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
               }`}
             >
               <Award className="w-3.5 h-3.5" /> Officer
@@ -93,37 +101,37 @@ export default function LoginPage() {
             <button
               type="button"
               onClick={() => setPortal("ADMIN")}
-              className={`py-2 text-xs font-semibold rounded-lg transition-all flex items-center justify-center gap-1.5 ${
+              className={`py-2 text-xs font-semibold rounded-md transition-all flex items-center justify-center gap-1.5 ${
                 portal === "ADMIN"
-                  ? "bg-amber-600 text-white shadow"
-                  : "text-slate-400 hover:text-slate-200"
+                  ? "bg-white text-blue-700 shadow-sm border-slate-200 border"
+                  : "text-slate-500 hover:text-slate-700 hover:bg-slate-50"
               }`}
             >
               <Shield className="w-3.5 h-3.5" /> Admin
             </button>
           </div>
 
-          <form className="space-y-4" onSubmit={handleSubmit}>
+          <form className="space-y-5" onSubmit={handleSubmit}>
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                {portal === "CITIZEN" ? "Email or Mobile No." : "Official Email / Username"}
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                {portal === "CITIZEN" ? "Email or Mobile Number" : "Official Email / Username"}
               </label>
               <input
                 type="text"
                 required
                 value={identifier}
                 onChange={(e) => setIdentifier(e.target.value)}
-                placeholder={portal === "CITIZEN" ? "applicant@hp.in or 98XXXXXXXX" : "officer@hp.gov.in"}
-                className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-sm"
+                placeholder={portal === "CITIZEN" ? "e.g. 98XXXXXXXX" : "e.g. officer@gov.in"}
+                className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-md text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent text-sm shadow-sm"
               />
             </div>
 
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider">
+                <label className="block text-sm font-medium text-slate-700">
                   Password
                 </label>
-                <Link to="/forgot-password" className="text-xs font-semibold text-emerald-400 hover:text-emerald-300">
+                <Link to="/forgot-password" className="text-xs font-semibold text-blue-700 hover:text-blue-800">
                   Forgot password?
                 </Link>
               </div>
@@ -133,14 +141,14 @@ export default function LoginPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
-                className="w-full px-4 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent text-sm"
+                className="w-full px-3 py-2.5 bg-white border border-slate-300 rounded-md text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent text-sm shadow-sm"
               />
             </div>
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full mt-2 flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 transition-all shadow-lg shadow-emerald-900/40 disabled:opacity-50"
+              className="w-full mt-2 flex items-center justify-center gap-2 py-2.5 px-4 rounded-md text-sm font-semibold text-white bg-blue-700 hover:bg-blue-800 transition-colors shadow-sm disabled:opacity-70"
             >
               {loading ? "Authenticating..." : `Sign in to ${portal.charAt(0) + portal.slice(1).toLowerCase()} Portal`}
               {!loading && <ArrowRight className="w-4 h-4" />}
@@ -148,16 +156,15 @@ export default function LoginPage() {
           </form>
 
           {portal === "CITIZEN" && (
-            <div className="mt-6 pt-5 border-t border-slate-800/80 text-center">
-              <p className="text-xs text-slate-400">
-                Don't have a HimSeva account?{" "}
-                <Link to="/register" className="font-semibold text-emerald-400 hover:text-emerald-300">
+            <div className="mt-6 pt-6 border-t border-slate-200 text-center">
+              <p className="text-sm text-slate-600">
+                Don't have an account?{" "}
+                <Link to="/register" className="font-semibold text-blue-700 hover:text-blue-800">
                   Register as Citizen
                 </Link>
               </p>
             </div>
           )}
-
 
         </div>
       </div>

@@ -2,46 +2,31 @@ import { Link } from "react-router-dom";
 
 import {
   UserPlus,
-  Building2,
   FileCog,
   ClipboardList,
 } from "lucide-react";
 
 const actions = [
   {
-    title: "Add Officer",
-    description:
-      "Create DA, Patwari or Tehsildar accounts",
+    title: "Manage Officers",
+    description: "Create and manage DA, Patwari or Tehsildar accounts",
     icon: UserPlus,
-    path: "/admin/officers/new",
+    path: "/admin/officers",
     color: "bg-blue-600",
   },
-
   {
-    title: "Departments",
-    description:
-      "Manage government departments",
-    icon: Building2,
-    path: "/admin/departments",
-    color: "bg-green-600",
-  },
-
-  {
-    title: "Certificate Services",
-    description:
-      "Manage available services",
+    title: "Reports & Analytics",
+    description: "View detailed system analytics and export data",
     icon: FileCog,
-    path: "/admin/services",
+    path: "/admin/reports",
     color: "bg-purple-600",
   },
-
   {
-    title: "Applications",
-    description:
-      "Monitor submitted applications",
+    title: "Grievances",
+    description: "Review and respond to citizen complaints",
     icon: ClipboardList,
-    path: "/admin/applications",
-    color: "bg-orange-500",
+    path: "/admin/grievances",
+    color: "bg-red-500",
   },
 ];
 
